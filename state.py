@@ -5,6 +5,8 @@ class AgentState(TypedDict):
 
     user_query: str
 
+    route: str
+
     city: str
 
     weather_data: dict

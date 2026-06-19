@@ -5,6 +5,47 @@ llm = ChatOllama(
     model="llama3.2"
 )
 
+def router(state):
+
+    query = state["user_query"]
+
+    prompt = f"""
+    Determine if this query needs weather information.
+
+    Answer with EXACTLY ONE WORD:
+
+    weather
+    chat
+
+    Query:
+    {query}
+    """
+
+    decision = llm.invoke(prompt)
+
+    response = decision.content.strip().lower()
+
+    print("Raw LLM response:", response)
+
+    if "weather" in response:
+        route = "weather"
+    else:
+        route = "chat"
+
+    return {
+        "route": route
+    }
+
+def normal_chat(state):
+
+    query = state["user_query"]
+
+    answer = llm.invoke(query)
+
+    return {
+        "response": answer.content
+    }
+
 def extract_city(state):
 
     query = state["user_query"]
