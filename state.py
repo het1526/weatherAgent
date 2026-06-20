@@ -1,14 +1,8 @@
 from typing import TypedDict
+from typing import Annotated
+from langgraph.graph.message import add_messages
 
 
 class AgentState(TypedDict):
 
-    user_query: str
-
-    route: str
-
-    city: str
-
-    weather_data: dict
-
-    response: str
+    messages: Annotated[list, add_messages]

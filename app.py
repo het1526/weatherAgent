@@ -5,16 +5,21 @@ load_dotenv()
 from graph import graph
 
 query = input(
-    "Ask about weather: "
+    "Ask something: "
 )
 
 result = graph.invoke(
     {
-        "user_query": query
+        "messages": [
+            (
+                "user",
+                query
+            )
+        ]
     }
 )
 
 print(
-    result["response"]
+    result["messages"][-1].content
 )
 

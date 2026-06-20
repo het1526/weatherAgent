@@ -1,78 +1,63 @@
-from langgraph.graph import StateGraph
-from langgraph.graph import END
+from langgraph.graph import (
+    StateGraph,
+    END 
+) 
 from state import AgentState
+from langgraph.prebuilt import ToolNode
 
 from nodes import (
-    extract_city,
-    fetch_weather,
-    generate_response,
-    router,
-    normal_chat
+    agent
 )
 
-builder = StateGraph(AgentState)
-
-def route_decision(state):
-
-    return state["route"]
-
-builder.add_node(
-    "extract_city",
-    extract_city
+from tools import(
+    get_weather
 )
 
-builder.add_node(
-    "fetch_weather",
-    fetch_weather
+tool_node = ToolNode(
+    [get_weather]
 )
 
-builder.add_node(
-    "generate_response",
-    generate_response
-)
+def should_continue(state):
 
-builder.add_node(
-    "router",
-    router
+    messages = state["messages"]
+
+    last_message = messages[-1]
+
+    if last_message.tool_calls:
+        return "tools"
+
+    return END
+
+builder = StateGraph(
+    AgentState
 )
 
 builder.add_node(
-    "chat",
-    normal_chat
+    "agent",
+    agent
+)
+
+builder.add_node(
+    "tools",
+    tool_node
 )
 
 builder.set_entry_point(
-    "router"
+    "agent"
 )
 
 builder.add_conditional_edges(
-    "router",
-    route_decision,
+    "agent",
+    should_continue,
     {
-        "weather": "extract_city",
-        "chat": "chat"
+        "tools": "tools",
+        END: END
     }
 )
 
 builder.add_edge(
-    "extract_city",
-    "fetch_weather"
+    "tools",
+    "agent"
 )
-
-builder.add_edge(
-    "fetch_weather",
-    "generate_response"
-)
-
-builder.add_edge(
-    "chat",
-    END
-)
-
-builder.add_edge(
-    "generate_response",
-    END
-)
-
 
 graph = builder.compile()
