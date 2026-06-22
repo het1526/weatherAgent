@@ -40,8 +40,8 @@ def agent(state):
 
     response = llm_with_tools.invoke([system_prompt] + messages)
 
-    print("Tool Calls:")
-    print(response.tool_calls)
+    # print("Tool Calls:")
+    # print(response.tool_calls)
 
     return {
         "messages": [response]
