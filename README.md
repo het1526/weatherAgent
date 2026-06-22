@@ -121,7 +121,7 @@ Agent generates a final response for the user.
 ### 1. Clone Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/het1526/weatherAgent
 cd weather-agent
 ```
 
@@ -243,4 +243,4 @@ The temperature in Mumbai is 31°C with scattered clouds.
 
 ## Learning Objective
 
-This project was built as a hands-on introduction to Agentic AI systems and LangGraph-based workflows, serving as a foundation for more advanced agents involving document processing, PDF comparison, and automation workflows.
+This project was built as a hands-on introduction to Agentic AI systems and LangGraph-based workflows, serving as a foundation for more advanced agents.
